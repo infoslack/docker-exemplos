@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog</title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+    <%= stylesheet_link_tag "application", "http://fonts.googleapis.com/css?family=Raleway:400,700" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div id="sidebar">
+      <div id="logo">
+        <%= link_to root_path do %>
+          <%= image_tag "logo.png" %>
+        <% end %>
+      </div>
+
+      <ul>
+        <li class="category">Website</li>
+        <li><%= link_to "Blog", root_path %></li>
+        <li><%= link_to "About", about_path %></li>
+      </ul>
+
+      <ul>
+        <li class="category">Social</li>
+        <li><a href="https://twitter.com/infoslack">Twitter</a></li>
+        <li><a href="https://github.com/infoslack">Github</a></li>
+        <li><a href="mailto:infoslack@gmail.com">Email</a></li>
+      </ul>
+
+      <% if !user_signed_in? %>
+        <p class="sign_in"><%= link_to "Admin Login", new_user_session_path %></p>
+      <% end %>
+    </div>
+
+    <div id="main_content">
+      <div id="header">
+        <p>All Posts</p>
+
+        <% if user_signed_in? %>
+          <div class="buttons">
+            <button class="button"><%= link_to "New Post", new_post_path %></button>
+            <button class="button">Log Out</button>
+          </div>
+        <% end %>
+      </div>
+
+      <% flash.each do |name,msg| %>
+        <%= content_tag(:div, msg, class: "alert") %>
+      <% end %>
+
+
+      <%= yield %>
+
+    </div>
+  </body>
+</html>

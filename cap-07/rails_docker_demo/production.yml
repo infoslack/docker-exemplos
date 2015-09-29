@@ -1,0 +1,27 @@
+db:
+  image: postgres:9.3
+  volumes:
+    - ~/.docker-volumes/blog/db/:/var/lib/postgresql/data/
+  expose:
+    - '5432'
+
+app:
+  build: .
+  command: bundle exec puma -p 9001 -e production
+  environment:
+    - RAILS_ENV=production
+  volumes:
+    - .:/usr/src/app
+  expose:
+    - '9001'
+  links:
+    - db
+
+web:
+  image: infoslack/nginx-puma
+  volumes_from:
+    - app
+  ports:
+    - '80:80'
+  links:
+    - app

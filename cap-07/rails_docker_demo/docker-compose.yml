@@ -1,0 +1,16 @@
+db:
+  image: postgres:9.3
+  volumes:
+    - ~/.docker-volumes/blog/db/:/var/lib/postgresql/data/
+  expose:
+    - '5432'
+
+app:
+  build: .
+  command: bundle exec rails s -b 0.0.0.0 -p 3000
+  volumes:
+    - .:/usr/src/app
+  ports:
+    - '8080:3000'
+  links:
+    - db
